@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:clinicaldatascanner/core/doc_scanner/doc_scanner.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -32,9 +35,11 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
+  void _incrementCounter() async {
+    final paths = await docScanner.scanDoc(2);
+
+    paths.forEach((path) {
+      log('Scanned image path: $path');
     });
   }
 
