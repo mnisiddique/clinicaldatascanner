@@ -1,13 +1,12 @@
-
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 
-abstract class ImageTextScanner {
-  Future<String> scanImageFromText(String imagePath);
+abstract class OCRService {
+  Future<String> ocrText(String imagePath);
 }
 
-class GoogleMLKitScanner implements ImageTextScanner {
+class GoogleMLKitImpl implements OCRService {
   @override
-  Future<String> scanImageFromText(String imagePath) async {
+  Future<String> ocrText(String imagePath) async {
     final InputImage inputImage = InputImage.fromFilePath(
       Uri.parse(imagePath).toFilePath(),
     );
@@ -21,4 +20,4 @@ class GoogleMLKitScanner implements ImageTextScanner {
   }
 }
 
-ImageTextScanner get mlkitScanner => GoogleMLKitScanner();
+OCRService get mlkitScanner => GoogleMLKitImpl();

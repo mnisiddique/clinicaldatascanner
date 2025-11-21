@@ -1,5 +1,4 @@
-
-import 'package:clinicaldatascanner/core/data_extractor/image_text_scanner.dart';
+import 'package:clinicaldatascanner/core/ocr/ocr_service.dart';
 import 'package:clinicaldatascanner/core/doc_scanner/doc_scanner.dart';
 import 'package:flutter/material.dart';
 
@@ -38,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void _incrementCounter() async {
     final paths = await docScanner.scanDoc(1);
 
-    mlkitScanner.scanImageFromText(paths.first).then((value) {
+    mlkitScanner.ocrText(paths.first).then((value) {
       setState(() {
         scannedText = value;
       });

@@ -1,0 +1,2 @@
+const String kChatGptApiKey =
+    "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";
