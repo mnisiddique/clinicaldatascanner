@@ -1,6 +1,6 @@
 import 'package:clinicaldatascanner/core/injector/injector.dart';
-import 'package:clinicaldatascanner/core/ocr/ocr_service.dart';
 import 'package:clinicaldatascanner/core/doc_scanner/doc_scanner.dart';
+import 'package:clinicaldatascanner/core/ocr/ocr_strategy.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -36,18 +36,18 @@ class _MyHomePageState extends State<MyHomePage> {
   String scannedText = "07";
 
   late final DocScanner docScanner;
-  late final OCRService mlkitScanner;
+  late final OcrStrategy ocrStrategy;
   @override
   void initState() {
     docScanner = getIt<DocScanner>();
-    mlkitScanner = getIt<OCRService>();
+    ocrStrategy = getIt<OcrStrategy>();
     super.initState();
   }
 
   void _incrementCounter() async {
     final paths = await docScanner.scanDoc(1);
 
-    mlkitScanner.ocrText(paths.first).then((value) {
+    ocrStrategy.ocrText(paths.first).then((value) {
       setState(() {
         scannedText = value;
       });

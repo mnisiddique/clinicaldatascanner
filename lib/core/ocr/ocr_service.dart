@@ -5,6 +5,7 @@ abstract class OCRService {
   Future<String> ocrText(String imagePath);
 }
 
+@named
 @Injectable(as: OCRService)
 class GoogleMLKitImpl implements OCRService {
   @override
