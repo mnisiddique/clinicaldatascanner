@@ -1,5 +1,5 @@
-import 'dart:developer';
 
+import 'package:clinicaldatascanner/core/data_extractor/image_text_scanner.dart';
 import 'package:clinicaldatascanner/core/doc_scanner/doc_scanner.dart';
 import 'package:flutter/material.dart';
 
@@ -33,13 +33,15 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  String scannedText = "07";
 
   void _incrementCounter() async {
-    final paths = await docScanner.scanDoc(2);
+    final paths = await docScanner.scanDoc(1);
 
-    paths.forEach((path) {
-      log('Scanned image path: $path');
+    mlkitScanner.scanImageFromText(paths.first).then((value) {
+      setState(() {
+        scannedText = value;
+      });
     });
   }
 
@@ -51,16 +53,18 @@ class _MyHomePageState extends State<MyHomePage> {
 
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text('You have pushed the button this many times:'),
+              Text(
+                scannedText,
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
