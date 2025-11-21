@@ -1,3 +1,4 @@
+import 'package:clinicaldatascanner/core/injector/injector.dart';
 import 'package:clinicaldatascanner/core/ocr/ocr_service.dart';
 import 'package:clinicaldatascanner/core/doc_scanner/doc_scanner.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,15 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String scannedText = "07";
+
+  late final DocScanner docScanner;
+  late final OCRService mlkitScanner;
+  @override
+  void initState() {
+    docScanner = getIt<DocScanner>();
+    mlkitScanner = getIt<OCRService>();
+    super.initState();
+  }
 
   void _incrementCounter() async {
     final paths = await docScanner.scanDoc(1);

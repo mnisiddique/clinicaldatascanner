@@ -1,9 +1,11 @@
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class OCRService {
   Future<String> ocrText(String imagePath);
 }
 
+@Injectable(as: OCRService)
 class GoogleMLKitImpl implements OCRService {
   @override
   Future<String> ocrText(String imagePath) async {
@@ -20,4 +22,3 @@ class GoogleMLKitImpl implements OCRService {
   }
 }
 
-OCRService get mlkitScanner => GoogleMLKitImpl();

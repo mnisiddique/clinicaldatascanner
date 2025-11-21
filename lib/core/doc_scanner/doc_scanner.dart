@@ -1,11 +1,13 @@
 
 import 'package:flutter/services.dart';
 import 'package:flutter_doc_scanner/flutter_doc_scanner.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class DocScanner {
   Future<List<String>> scanDoc(int? pageNumber);
 }
 
+@Injectable(as: DocScanner)
 class DocScannerImpl implements DocScanner {
   List<String> parsePath(String raw) {
     final regex = RegExp(r'imageUri=([^}]+?\.jpg)');
@@ -36,4 +38,3 @@ class DocScannerImpl implements DocScanner {
   }
 }
 
-DocScanner get docScanner => DocScannerImpl();
