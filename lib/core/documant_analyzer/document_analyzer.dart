@@ -16,7 +16,7 @@ class ChatGPTAnalyzer implements DocumentAnalyzer {
   @override
   Future<OpenAiResponseModel> analyze(String ocrText) async {
     final request = OpenAiRequestModel(
-      model: _kGPT40MINI,
+      model: _kGPT3TURBO,
       messages: [
         MessageModel(role: _kSystem, content: _kPrompt),
         MessageModel(role: _kUser, content: ocrText),
@@ -26,11 +26,12 @@ class ChatGPTAnalyzer implements DocumentAnalyzer {
   }
 }
 
-const String _kGPT40MINI = "gpt-4o-mini";
+// const String _kGPT40MINI = "gpt-4o-mini";
+const String _kGPT3TURBO = "gpt-3.5-turbo";
 const String _kSystem = "system";
 const String _kUser = "user";
 const String _kPrompt = """
-You are a medical document analyzer.
+You are a medical document nalyzer.
 
 Task:
 1. Determine whether the input text belongs to any medical domain:
