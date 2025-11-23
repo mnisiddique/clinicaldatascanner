@@ -18,12 +18,12 @@ abstract class OpenAiApiService {
 const Map<String, dynamic> headers = {
   'Content-Type': 'application/json',
   'accept': '*/*',
-  "Authorization": "Bearer $alebele",
+  "Authorization": "Bearer $kChatGPTApiKey",
 };
 
 const String openAIApiUrl = "https://api.openai.com";
 
-const String alebele = String.fromEnvironment(
-  'aelebele',
+const String kChatGPTApiKey = String.fromEnvironment(
+  'chatGPTApiKey',
   defaultValue: '',
 );
