@@ -2,15 +2,28 @@
 
 A new Flutter project.
 
-## Getting Started
+## CRL for gemini chat
 
-This project is a starting point for a Flutter application.
+```bash
+curl \
+  -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=YOU_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contents": [
+      {
+        "parts": [
+          { "text": "can you help me identifying text?" }
+        ]
+      }
+    ]
+  }'
+```
+## Listing available models
+```bash
+  curl "https://generativelanguage.googleapis.com/v1beta/models?key=YOU_API_KEY"
+```
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+
