@@ -23,5 +23,7 @@ const Map<String, dynamic> headers = {
 
 const String openAIApiUrl = "https://api.openai.com";
 
-const String kChatGptApiKey =
-    "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";
+const String kChatGptApiKey = String.fromEnvironment(
+  'chatGPTApiKey',
+  defaultValue: '',
+);

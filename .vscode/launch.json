@@ -8,7 +8,10 @@
         {
             "name": "clinicaldatascanner",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "args": [
+                "--dart-define-from-file=app_secret/api_keys.json",
+            ]
         },
         {
             "name": "clinicaldatascanner (profile mode)",
