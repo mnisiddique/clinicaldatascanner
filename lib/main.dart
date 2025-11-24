@@ -1,4 +1,5 @@
 import 'package:clinicaldatascanner/core/documant_analyzer/document_analyzer.dart';
+import 'package:clinicaldatascanner/core/documant_analyzer/gemni_service/response/gemni_response_model.dart';
 import 'package:clinicaldatascanner/core/injector/injector.dart';
 import 'package:clinicaldatascanner/core/doc_scanner/doc_scanner.dart';
 import 'package:clinicaldatascanner/core/ocr/ocr_strategy.dart';
@@ -7,6 +8,7 @@ import 'package:gap/gap.dart';
 
 void main() {
   configureDependencies();
+
   runApp(const MyApp());
 }
 
@@ -16,12 +18,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Clicnical Data Scanner',
+      title: 'Clinical Data Scanner',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
       ),
-      home: const MyHomePage(title: 'Clicnical Data Scanner Demo'),
+      home: const MyHomePage(title: 'Clinical Data Scanner Demo'),
     );
   }
 }
@@ -40,16 +42,16 @@ class _MyHomePageState extends State<MyHomePage> {
   String loadingMessage = "";
   String category = "";
   String summary = "";
-  String data = "";
+  bool? isMedicalRecord;
 
   late final DocScanner docScanner;
   late final OcrStrategy ocrStrategy;
-  late final DocumentAnalyzer docAnalyzer;
+  late final DocumentAnalyzer<GemniResponseModel> docAnalyzer;
   @override
   void initState() {
     docScanner = getIt<DocScanner>();
     ocrStrategy = getIt<OcrStrategy>();
-    docAnalyzer = getIt<DocumentAnalyzer>(instanceName: "ChatGPTAnalyzer");
+    docAnalyzer = getIt<DocumentAnalyzer<GemniResponseModel>>();
     super.initState();
   }
 
@@ -59,10 +61,9 @@ class _MyHomePageState extends State<MyHomePage> {
     if (paths.isEmpty) return;
 
     setState(() {
-      loadingMessage = "Scaaning Document...";
+      loadingMessage = "Scanning Document...";
       category = "";
       summary = "";
-      data = "";
     });
 
     final ocrText = await ocrStrategy.ocrText(paths.first);
@@ -71,15 +72,14 @@ class _MyHomePageState extends State<MyHomePage> {
       loadingMessage = "Analzing Document...";
       category = "";
       summary = "";
-      data = "";
     });
     final analyzedText = await docAnalyzer.analyze(ocrText);
 
     setState(() {
       loadingMessage = "";
-      category = analyzedText.category;
-      summary = analyzedText.summary;
-      data = analyzedText.structuredData.toString();
+      category = analyzedText.type;
+      summary = analyzedText.oneLineSummary;
+      isMedicalRecord = analyzedText.isMedicalRecord;
     });
   }
 
@@ -88,16 +88,19 @@ class _MyHomePageState extends State<MyHomePage> {
     Widget bodyContent = SizedBox();
     if (loadingMessage.isNotEmpty) {
       bodyContent = LoadingWidget(message: loadingMessage);
-    } else if (data.isNotEmpty) {
-      bodyContent = AnalysisOutputWidget(
-        category: category,
-        summary: summary,
-        data: data,
+    } else if (isMedicalRecord != null && isMedicalRecord == true) {
+      bodyContent = AnalysisOutputWidget(category: category, summary: summary);
+    } else if (isMedicalRecord != null && isMedicalRecord == false) {
+      bodyContent = Center(
+        child: Text(
+          'This is not a medical record document.',
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
       );
     } else {
       bodyContent = Center(
         child: Text(
-          'Press the button to scan a document',
+          'Press the + button to scan a document.',
           style: Theme.of(context).textTheme.bodyMedium,
         ),
       );
@@ -143,13 +146,10 @@ class AnalysisOutputWidget extends StatelessWidget {
     super.key,
     required this.category,
     required this.summary,
-    required this.data,
   });
 
   final String category;
   final String summary;
-  final String data;
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -157,16 +157,10 @@ class AnalysisOutputWidget extends StatelessWidget {
       child: Center(
         child: Column(
           children: <Widget>[
-            Text(
-              'Prescription',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            Text(
-              "Blood tests including RBS, CBC, SGPT.",
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            Gap(32),
-            SelectableText(data, style: Theme.of(context).textTheme.bodyMedium),
+            Text(category, style: Theme.of(context).textTheme.headlineMedium),
+            Text(summary, style: Theme.of(context).textTheme.bodyMedium),
+            // Gap(32),
+            // SelectableText(data, style: Theme.of(context).textTheme.bodyMedium),
           ],
         ),
       ),

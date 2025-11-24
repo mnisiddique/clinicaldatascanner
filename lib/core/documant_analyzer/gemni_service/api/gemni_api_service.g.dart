@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'open_ai_api_service.dart';
+part of 'gemni_api_service.dart';
 
 // dart format off
 
@@ -10,9 +10,9 @@ part of 'open_ai_api_service.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element,unnecessary_string_interpolations,unused_element_parameter,avoid_unused_constructor_parameters,unreachable_from_main
 
-class _OpenAiApiService implements OpenAiApiService {
-  _OpenAiApiService(this._dio, {this.baseUrl, this.errorLogger}) {
-    baseUrl ??= 'https://api.openai.com';
+class _GemniApiService implements GemniApiService {
+  _GemniApiService(this._dio, {this.baseUrl, this.errorLogger}) {
+    baseUrl ??= 'https://generativelanguage.googleapis.com';
   }
 
   final Dio _dio;
@@ -22,18 +22,20 @@ class _OpenAiApiService implements OpenAiApiService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<OpenAiResponseModel> askChatGpt(OpenAiRequestModel request) async {
+  Future<GemniApiResponse> askGemni(
+    GemniRequestModel request,
+    String apiKey,
+  ) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'key': apiKey};
     final _headers = <String, dynamic>{
       r'Content-Type': 'application/json',
       r'accept': '*/*',
-      r'Authorization': 'Bearer ',
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(request.toJson());
-    final _options = _setStreamType<OpenAiResponseModel>(
+    final _options = _setStreamType<GemniApiResponse>(
       Options(
             method: 'POST',
             headers: _headers,
@@ -42,16 +44,16 @@ class _OpenAiApiService implements OpenAiApiService {
           )
           .compose(
             _dio.options,
-            '/v1/chat/completions',
+            '/v1beta/models/gemini-2.5-pro:generateContent',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late OpenAiResponseModel _value;
+    late GemniApiResponse _value;
     try {
-      _value = OpenAiResponseModel.fromJson(_result.data!);
+      _value = GemniApiResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, _result);
       rethrow;

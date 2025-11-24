@@ -16,8 +16,17 @@ import 'package:injectable/injectable.dart' as _i526;
 
 import '../doc_scanner/doc_scanner.dart' as _i338;
 import '../documant_analyzer/document_analyzer.dart' as _i146;
+import '../documant_analyzer/gemni_service/analyzer/gemni_analyzer.dart'
+    as _i583;
+import '../documant_analyzer/gemni_service/api/gemni_api_service.dart' as _i327;
+import '../documant_analyzer/gemni_service/response/gemni_response_model.dart'
+    as _i989;
+import '../documant_analyzer/open_ai_service/analyzer/gpt_analyzer.dart'
+    as _i738;
 import '../documant_analyzer/open_ai_service/api_service/open_ai_api_service.dart'
     as _i726;
+import '../documant_analyzer/open_ai_service/response/open_ai_response_model.dart'
+    as _i518;
 import '../ocr/ocr_service.dart' as _i290;
 import '../ocr/ocr_strategy.dart' as _i514;
 import 'module_registry.dart' as _i544;
@@ -41,14 +50,19 @@ extension GetItInjectableX on _i174.GetIt {
         mlkitService: gh<_i290.OCRService>(instanceName: 'GoogleMLKitImpl'),
       ),
     );
+    gh.factory<_i327.GemniApiService>(
+      () => _i327.GemniApiService(gh<_i361.Dio>()),
+    );
     gh.factory<_i726.OpenAiApiService>(
       () => _i726.OpenAiApiService(gh<_i361.Dio>()),
     );
+    gh.factory<_i146.DocumentAnalyzer<_i989.GemniResponseModel>>(
+      () => _i583.GemniAnalyzer(gemniApiService: gh<_i327.GemniApiService>()),
+    );
     gh.factory<_i338.DocScanner>(() => _i338.DocScannerImpl());
-    gh.factory<_i146.DocumentAnalyzer>(
+    gh.factory<_i146.DocumentAnalyzer<_i518.OpenAiResponseModel>>(
       () =>
-          _i146.ChatGPTAnalyzer(openAiApiService: gh<_i726.OpenAiApiService>()),
-      instanceName: 'ChatGPTAnalyzer',
+          _i738.ChatGPTAnalyzer(openAiApiService: gh<_i726.OpenAiApiService>()),
     );
     return this;
   }
