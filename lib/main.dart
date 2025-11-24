@@ -43,6 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String category = "";
   String summary = "";
   bool? isMedicalRecord;
+  String gOcrText = "";
 
   late final DocScanner docScanner;
   late final OcrStrategy ocrStrategy;
@@ -61,9 +62,10 @@ class _MyHomePageState extends State<MyHomePage> {
     if (paths.isEmpty) return;
 
     setState(() {
-      loadingMessage = "Scanning Document...";
+      loadingMessage = "Extracting Document Text...";
       category = "";
       summary = "";
+      gOcrText = "";
     });
 
     final ocrText = await ocrStrategy.ocrText(paths.first);
@@ -72,6 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
       loadingMessage = "Analzing Document...";
       category = "";
       summary = "";
+      gOcrText = "";
     });
     final analyzedText = await docAnalyzer.analyze(ocrText);
 
@@ -80,6 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
       category = analyzedText.type;
       summary = analyzedText.oneLineSummary;
       isMedicalRecord = analyzedText.isMedicalRecord;
+      gOcrText = ocrText;
     });
   }
 
@@ -89,7 +93,11 @@ class _MyHomePageState extends State<MyHomePage> {
     if (loadingMessage.isNotEmpty) {
       bodyContent = LoadingWidget(message: loadingMessage);
     } else if (isMedicalRecord != null && isMedicalRecord == true) {
-      bodyContent = AnalysisOutputWidget(category: category, summary: summary);
+      bodyContent = AnalysisOutputWidget(
+        category: category,
+        summary: summary,
+        orcrText: gOcrText,
+      );
     } else if (isMedicalRecord != null && isMedicalRecord == false) {
       bodyContent = Center(
         child: Text(
@@ -146,10 +154,12 @@ class AnalysisOutputWidget extends StatelessWidget {
     super.key,
     required this.category,
     required this.summary,
+    required this.orcrText,
   });
 
   final String category;
   final String summary;
+  final String orcrText;
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -159,8 +169,18 @@ class AnalysisOutputWidget extends StatelessWidget {
           children: <Widget>[
             Text(category, style: Theme.of(context).textTheme.headlineMedium),
             Text(summary, style: Theme.of(context).textTheme.bodyMedium),
-            // Gap(32),
-            // SelectableText(data, style: Theme.of(context).textTheme.bodyMedium),
+            Gap(32),
+            Text("OCR Text", style: Theme.of(context).textTheme.headlineMedium),
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: SelectableText(
+                orcrText,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ),
           ],
         ),
       ),
