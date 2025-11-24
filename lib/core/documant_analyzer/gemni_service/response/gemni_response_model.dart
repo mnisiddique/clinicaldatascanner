@@ -86,7 +86,13 @@ class GemniResponseModel {
 
   factory GemniResponseModel.fromRawResponse(GemniApiResponse response) {
     final part = response.candidates?.first.content?.parts?.first.text ?? '';
-    final model = GemniResponseModel.fromJson(jsonDecode(part));
+    final model = GemniResponseModel.fromJson(jsonDecode(extractJson(part)));
     return model;
   }
+}
+
+String extractJson(String input) {
+  final regex = RegExp(r'\{[\s\S]*\}');
+  final match = regex.firstMatch(input);
+  return match?.group(0) ?? '';
 }
