@@ -71,20 +71,28 @@ class _MyHomePageState extends State<MyHomePage> {
     final ocrText = await ocrStrategy.ocrText(paths.first);
 
     setState(() {
-      loadingMessage = "Analzing Document...";
-      category = "";
-      summary = "";
-      gOcrText = "";
-    });
-    final analyzedText = await docAnalyzer.analyze(ocrText);
-
-    setState(() {
       loadingMessage = "";
-      category = analyzedText.type;
-      summary = analyzedText.oneLineSummary;
-      isMedicalRecord = analyzedText.isMedicalRecord;
+      category = "Prescription";
+      summary = "Vet Prescription";
+      isMedicalRecord = true;
       gOcrText = ocrText;
     });
+
+    // setState(() {
+    //   loadingMessage = "Analzing Document...";
+    //   category = "";
+    //   summary = "";
+    //   gOcrText = "";
+    // });
+    // final analyzedText = await docAnalyzer.analyze(ocrText);
+
+    // setState(() {
+    //   loadingMessage = "";
+    //   category = analyzedText.type;
+    //   summary = analyzedText.oneLineSummary;
+    //   isMedicalRecord = analyzedText.isMedicalRecord;
+    //   gOcrText = ocrText;
+    // });
   }
 
   @override

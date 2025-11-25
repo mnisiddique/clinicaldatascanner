@@ -15,7 +15,7 @@ class DocScannerImpl implements DocScanner {
 
     final paths = matches.map((m) => m.group(1)!.trim()).toList();
 
-    return paths;
+    return paths.map((path) => Uri.parse(path).toFilePath()).toList();
   }
 
   @override
