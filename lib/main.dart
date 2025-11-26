@@ -6,9 +6,9 @@ import 'package:clinicaldatascanner/core/ocr/ocr_strategy.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-void main() {
-  configureDependencies();
-
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await configureDependencies();
   runApp(const MyApp());
 }
 
