@@ -11,11 +11,11 @@ abstract class OcrStrategy {
 @Injectable(as: OcrStrategy)
 class OcrStrategyImpl implements OcrStrategy {
   final OCRService mlkitService;
-  final OCRService tesseractService;
+  // final OCRService tesseractService;
 
   OcrStrategyImpl({
     @Named.from(GoogleMLKitImpl) required this.mlkitService,
-    @Named.from(TessaractImpl) required this.tesseractService,
+    // @Named.from(TessaractImpl) required this.tesseractService,
   });
 
   img.Image applyThreshold(img.Image image, int threshold) {
@@ -70,11 +70,11 @@ class OcrStrategyImpl implements OcrStrategy {
   @override
   Future<String> ocrText(String imagePath) async {
     // Implement OCR logic here
-    final preprocessedPath = await preprocessImage(imagePath);
-    final bengaliText = await tesseractService.ocrText(preprocessedPath);
-    return bengaliText;
+
     // final englishText = await mlkitService.ocrText(imagePath);
     // final bengaliText = await tesseractService.ocrText(imagePath);
     // return '$bengaliText\n$englishText';
+
+    return "";
   }
 }
