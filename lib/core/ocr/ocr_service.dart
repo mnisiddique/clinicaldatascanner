@@ -29,7 +29,7 @@ class TessaractImpl implements OCRService {
   Future<String> ocrText(String imagePath) async {
     return await FlutterTesseractOcr.extractText(
       imagePath,
-      language: 'ben', // use multiple languages
+      language: 'ben+eng', // use multiple languages
       args: {"preserve_interword_spaces": "1"},
     );
   }
