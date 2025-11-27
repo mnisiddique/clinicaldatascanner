@@ -3,12 +3,13 @@ import 'package:clinicaldatascanner/core/documant_analyzer/gemni_service/respons
 import 'package:clinicaldatascanner/core/injector/injector.dart';
 import 'package:clinicaldatascanner/core/doc_scanner/doc_scanner.dart';
 import 'package:clinicaldatascanner/core/ocr/ocr_strategy.dart';
+import 'package:clinicaldatascanner/image_processor_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-void main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  await configureDependencies();
+  configureDependencies();
   runApp(const MyApp());
 }
 
@@ -23,7 +24,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
       ),
-      home: const MyHomePage(title: 'Clinical Data Scanner Demo'),
+      // home: const MyHomePage(title: 'Clinical Data Scanner Demo'),
+      home: const ImageProcessorWidget(),
     );
   }
 }

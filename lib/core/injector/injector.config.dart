@@ -27,6 +27,7 @@ import '../documant_analyzer/open_ai_service/api_service/open_ai_api_service.dar
     as _i726;
 import '../documant_analyzer/open_ai_service/response/open_ai_response_model.dart'
     as _i518;
+import '../image_preprocessor/image_processor.dart' as _i146;
 import '../ocr/ocr_service.dart' as _i290;
 import '../ocr/ocr_strategy.dart' as _i514;
 import 'module_registry.dart' as _i544;
@@ -39,6 +40,7 @@ extension GetItInjectableX on _i174.GetIt {
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final registerModule = _$RegisterModule();
+    gh.factory<_i146.ImageProcessor>(() => _i146.ImageProcessor());
     gh.factory<_i225.FlutterDocScanner>(() => registerModule.docScanner);
     gh.factory<_i361.Dio>(() => registerModule.chatGptDio);
     gh.factory<_i290.OCRService>(
