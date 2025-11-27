@@ -47,11 +47,6 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i290.GoogleMLKitImpl(),
       instanceName: 'GoogleMLKitImpl',
     );
-    gh.factory<_i514.OcrStrategy>(
-      () => _i514.OcrStrategyImpl(
-        mlkitService: gh<_i290.OCRService>(instanceName: 'GoogleMLKitImpl'),
-      ),
-    );
     gh.factory<_i327.GemniApiService>(
       () => _i327.GemniApiService(gh<_i361.Dio>()),
     );
@@ -62,9 +57,22 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i583.GemniAnalyzer(gemniApiService: gh<_i327.GemniApiService>()),
     );
     gh.factory<_i338.DocScanner>(() => _i338.DocScannerImpl());
+    gh.factory<_i290.OCRService>(
+      () => _i290.TessaractImpl(),
+      instanceName: 'TessaractImpl',
+    );
     gh.factory<_i146.DocumentAnalyzer<_i518.OpenAiResponseModel>>(
       () =>
           _i738.ChatGPTAnalyzer(openAiApiService: gh<_i726.OpenAiApiService>()),
+    );
+    gh.factory<_i514.OcrStrategy>(
+      () => _i514.OcrStrategyImpl(
+        mlkitService: gh<_i290.OCRService>(instanceName: 'GoogleMLKitImpl'),
+        tessaractOcrService: gh<_i290.OCRService>(
+          instanceName: 'TessaractImpl',
+        ),
+        imageProcessor: gh<_i146.ImageProcessor>(),
+      ),
     );
     return this;
   }

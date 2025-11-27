@@ -1,4 +1,4 @@
-
+import 'package:flutter_tesseract_ocr/android_ios.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:injectable/injectable.dart';
 // import 'package:image/image.dart' as img;
@@ -23,5 +23,16 @@ class GoogleMLKitImpl implements OCRService {
   }
 }
 
-
-
+@named
+@Injectable(as: OCRService)
+class TessaractImpl implements OCRService {
+  @override
+  Future<String> ocrText(String imagePath) async {
+    String text = await FlutterTesseractOcr.extractText(
+      imagePath,
+      language: 'ben+eng',
+      args: {"psm": "4", "preserve_interword_spaces": "1"},
+    );
+    return text;
+  }
+}

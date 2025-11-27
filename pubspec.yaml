@@ -44,6 +44,7 @@ dependencies:
   gap: ^3.0.1
   image: ^4.5.4
   flutter_tesseract_ocr: ^0.4.30
+  path_provider: ^2.1.5
 
 dev_dependencies:
   flutter_test:
@@ -73,9 +74,9 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/models/easyocr-easyocrdetector.tflite
-    - assets/models/easyocr-easyocrrecognizer.tflite
-    - assets/txts/bn_char.txt
+    - assets/tessdata/
+    - assets/tessdata_config.json
+ 
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

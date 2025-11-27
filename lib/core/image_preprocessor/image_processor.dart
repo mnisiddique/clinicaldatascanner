@@ -1,7 +1,9 @@
+import 'dart:io';
 
 import 'package:injectable/injectable.dart';
 
 import 'package:image/image.dart' as img;
+import 'package:path_provider/path_provider.dart';
 
 @Injectable()
 class ImageProcessor {
@@ -59,6 +61,19 @@ class ImageProcessor {
     final mask = threshold(grayScale, threshold: 200); // white bg
     final fastOutput = img.Image.from(mask);
 
-    return fastOutput; 
+    return fastOutput;
+  }
+
+  Future<String> saveImageToFile(img.Image image, String dirPath) async {
+    // Encode the image as PNG (you can use JpegEncoder as well)
+    final pngBytes = img.encodePng(image);
+    final cacheDir = await getTemporaryDirectory(); // app cache directory
+
+    final filePath =
+        '${cacheDir.path}/processed_${DateTime.now().millisecondsSinceEpoch}.png';
+    final file = File(filePath);
+    await file.writeAsBytes(pngBytes);
+
+    return file.path; // return final saved file path
   }
 }

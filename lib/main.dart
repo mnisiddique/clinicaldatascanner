@@ -1,9 +1,10 @@
+import 'dart:io';
+
 import 'package:clinicaldatascanner/core/documant_analyzer/document_analyzer.dart';
 import 'package:clinicaldatascanner/core/documant_analyzer/gemni_service/response/gemni_response_model.dart';
 import 'package:clinicaldatascanner/core/injector/injector.dart';
 import 'package:clinicaldatascanner/core/doc_scanner/doc_scanner.dart';
 import 'package:clinicaldatascanner/core/ocr/ocr_strategy.dart';
-import 'package:clinicaldatascanner/image_processor_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -24,8 +25,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
       ),
-      // home: const MyHomePage(title: 'Clinical Data Scanner Demo'),
-      home: const ImageProcessorWidget(),
+      home: const MyHomePage(title: 'Clinical Data Scanner Demo'),
+      // home: const ImageProcessorWidget(),
     );
   }
 }
@@ -40,12 +41,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String scannedText = "07";
+  // String scannedText = "07";
   String loadingMessage = "";
-  String category = "";
-  String summary = "";
-  bool? isMedicalRecord;
+  // String category = "";
+  // String summary = "";
+  // bool? isMedicalRecord;
   String gOcrText = "";
+  String imagePath = "";
 
   late final DocScanner docScanner;
   late final OcrStrategy ocrStrategy;
@@ -65,19 +67,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
     setState(() {
       loadingMessage = "Extracting Document Text...";
-      category = "";
-      summary = "";
+
       gOcrText = "";
     });
 
-    final ocrText = await ocrStrategy.ocrText(paths.first);
+    final ocrResult = await ocrStrategy.ocrText(paths.first);
 
     setState(() {
       loadingMessage = "";
-      category = "Prescription";
-      summary = "Vet Prescription";
-      isMedicalRecord = true;
-      gOcrText = ocrText;
+      imagePath = ocrResult.image;
+      gOcrText = ocrResult.text;
     });
 
     // setState(() {
@@ -102,19 +101,8 @@ class _MyHomePageState extends State<MyHomePage> {
     Widget bodyContent = SizedBox();
     if (loadingMessage.isNotEmpty) {
       bodyContent = LoadingWidget(message: loadingMessage);
-    } else if (isMedicalRecord != null && isMedicalRecord == true) {
-      bodyContent = AnalysisOutputWidget(
-        category: category,
-        summary: summary,
-        orcrText: gOcrText,
-      );
-    } else if (isMedicalRecord != null && isMedicalRecord == false) {
-      bodyContent = Center(
-        child: Text(
-          'This is not a medical record document.',
-          style: Theme.of(context).textTheme.bodyMedium,
-        ),
-      );
+    } else if (gOcrText.isNotEmpty) {
+      bodyContent = OcrOutPutWidget(orcrText: gOcrText, imagePath: imagePath);
     } else {
       bodyContent = Center(
         child: Text(
@@ -159,17 +147,16 @@ class LoadingWidget extends StatelessWidget {
   }
 }
 
-class AnalysisOutputWidget extends StatelessWidget {
-  const AnalysisOutputWidget({
+class OcrOutPutWidget extends StatelessWidget {
+  const OcrOutPutWidget({
     super.key,
-    required this.category,
-    required this.summary,
+
     required this.orcrText,
+    required this.imagePath,
   });
 
-  final String category;
-  final String summary;
   final String orcrText;
+  final String imagePath;
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -177,8 +164,9 @@ class AnalysisOutputWidget extends StatelessWidget {
       child: Center(
         child: Column(
           children: <Widget>[
-            Text(category, style: Theme.of(context).textTheme.headlineMedium),
-            Text(summary, style: Theme.of(context).textTheme.bodyMedium),
+            // Text(category, style: Theme.of(context).textTheme.headlineMedium),
+            // Text(summary, style: Theme.of(context).textTheme.bodyMedium),
+            Image.file(File(imagePath), fit: BoxFit.cover),
             Gap(32),
             Text("OCR Text", style: Theme.of(context).textTheme.headlineMedium),
             Container(
