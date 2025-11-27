@@ -43,7 +43,7 @@ dependencies:
   injectable: ^2.6.0
   gap: ^3.0.1
   image: ^4.5.4
-  tflite_flutter: ^0.12.1
+  flutter_tesseract_ocr: ^0.4.30
 
 dev_dependencies:
   flutter_test:

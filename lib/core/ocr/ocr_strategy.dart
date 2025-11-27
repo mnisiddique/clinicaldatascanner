@@ -8,11 +8,11 @@ abstract class OcrStrategy {
 @Injectable(as: OcrStrategy)
 class OcrStrategyImpl implements OcrStrategy {
   final OCRService mlkitService;
-  final OCRService easyOcrService;
+  // final OCRService easyOcrService;
 
   OcrStrategyImpl({
     @Named.from(GoogleMLKitImpl) required this.mlkitService,
-    @Named.from(EasyOCRImpl) required this.easyOcrService,
+    // @Named.from(EasyOCRImpl) required this.easyOcrService,
   });
 
   @override
@@ -20,9 +20,9 @@ class OcrStrategyImpl implements OcrStrategy {
     // Implement OCR logic here
 
     // final englishText = await mlkitService.ocrText(imagePath);
-    final bengaliText = await easyOcrService.ocrText(imagePath);
+    // final bengaliText = await easyOcrService.ocrText(imagePath);
     // return '$bengaliText\n$englishText';
 
-    return bengaliText;
+    return "bengaliText";
   }
 }
