@@ -5,6 +5,7 @@ import 'package:clinicaldatascanner/core/documant_analyzer/gemni_service/respons
 import 'package:clinicaldatascanner/core/injector/injector.dart';
 import 'package:clinicaldatascanner/core/doc_scanner/doc_scanner.dart';
 import 'package:clinicaldatascanner/core/ocr/ocr_strategy.dart';
+import 'package:clinicaldatascanner/navigation/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -19,14 +20,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Clinical Data Scanner',
+      routerConfig: AppRouter().config,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
       ),
-      home: const MyHomePage(title: 'Clinical Data Scanner Demo'),
-      // home: const ImageProcessorWidget(),
     );
   }
 }
