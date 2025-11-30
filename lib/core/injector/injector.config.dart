@@ -44,6 +44,10 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i225.FlutterDocScanner>(() => registerModule.docScanner);
     gh.factory<_i361.Dio>(() => registerModule.chatGptDio);
     gh.factory<_i290.OCRService>(
+      () => _i290.TessaractBenOnlyImpl(),
+      instanceName: 'TessaractBenOnlyImpl',
+    );
+    gh.factory<_i290.OCRService>(
       () => _i290.GoogleMLKitImpl(),
       instanceName: 'GoogleMLKitImpl',
     );
@@ -70,6 +74,9 @@ extension GetItInjectableX on _i174.GetIt {
         mlkitService: gh<_i290.OCRService>(instanceName: 'GoogleMLKitImpl'),
         tessaractOcrService: gh<_i290.OCRService>(
           instanceName: 'TessaractImpl',
+        ),
+        tessaractBenOcrService: gh<_i290.OCRService>(
+          instanceName: 'TessaractBenOnlyImpl',
         ),
         imageProcessor: gh<_i146.ImageProcessor>(),
       ),

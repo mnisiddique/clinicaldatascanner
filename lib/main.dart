@@ -50,12 +50,12 @@ class _MyHomePageState extends State<MyHomePage> {
   String imagePath = "";
 
   late final DocScanner docScanner;
-  late final OcrStrategy ocrStrategy;
+  late final OcrEngine ocrStrategy;
   late final DocumentAnalyzer<GemniResponseModel> docAnalyzer;
   @override
   void initState() {
     docScanner = getIt<DocScanner>();
-    ocrStrategy = getIt<OcrStrategy>();
+    ocrStrategy = getIt<OcrEngine>();
     docAnalyzer = getIt<DocumentAnalyzer<GemniResponseModel>>();
     super.initState();
   }
@@ -71,13 +71,13 @@ class _MyHomePageState extends State<MyHomePage> {
       gOcrText = "";
     });
 
-    final ocrResult = await ocrStrategy.ocrText(paths.first);
+    // final ocrResult = await ocrStrategy.ocrText(paths.first);
 
-    setState(() {
-      loadingMessage = "";
-      imagePath = ocrResult.image;
-      gOcrText = ocrResult.text;
-    });
+    // setState(() {
+    //   loadingMessage = "";
+    //   imagePath = ocrResult.image;
+    //   gOcrText = ocrResult.text;
+    // });
 
     // setState(() {
     //   loadingMessage = "Analzing Document...";
