@@ -90,10 +90,25 @@ class _DocScannerScreenState extends State<DocScannerScreen> {
                           _imagePath,
                           engine,
                         );
+                        setState(() {
+                          _isLoading = false;
+                          _imagePath = ocrResult.image;
+                        });
                         goToOcrOutputScreen(ocrResult.text);
                       }
                     },
-                    child: Image.file(File(_imagePath), fit: BoxFit.contain),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.blue, width: 2),
+                        ),
+                        child: Image.file(
+                          File(_imagePath),
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
 
@@ -103,7 +118,7 @@ class _DocScannerScreenState extends State<DocScannerScreen> {
               ],
             ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: scanDocument,
         tooltip: 'Increment',
         child: const Icon(Icons.scanner_sharp),
       ),
@@ -116,21 +131,42 @@ class OcrOptions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ElevatedButton(
-          onPressed: () => context.pop(OcrEngine.mlKit),
-          child: const Text('ML kit'),
-        ),
-        ElevatedButton(
-          onPressed: () => context.pop(OcrEngine.tessaract),
-          child: const Text('Tessaract'),
-        ),
-        ElevatedButton(
-          onPressed: () => context.pop(OcrEngine.combined),
-          child: const Text('MLkit + Tessaract'),
-        ),
-      ],
+    return SizedBox(
+      width: double.infinity,
+      child: ListView(
+        padding: EdgeInsets.all(8.0),
+        shrinkWrap: true,
+
+        children: [
+          ListTile(
+            title: Text(
+              'ML Kit OCR',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            onTap: () {
+              Navigator.of(context).pop(OcrEngine.mlKit);
+            },
+          ),
+          ListTile(
+            title: Text(
+              'Tessaract OCR',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            onTap: () {
+              Navigator.of(context).pop(OcrEngine.tessaract);
+            },
+          ),
+          ListTile(
+            title:  Text(
+              'Combined OCR',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            onTap: () {
+              Navigator.of(context).pop(OcrEngine.combined);
+            },
+          ),
+        ],
+      ),
     );
   }
 }
