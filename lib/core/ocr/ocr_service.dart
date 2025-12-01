@@ -31,7 +31,7 @@ class TessaractImpl implements OCRService {
     String text = await FlutterTesseractOcr.extractText(
       imagePath,
       language: 'ben+eng',
-      args: {"psm": "4", "preserve_interword_spaces": "1"},
+      args: {"psm": "11", "preserve_interword_spaces": "1"},
     );
     return text;
   }
